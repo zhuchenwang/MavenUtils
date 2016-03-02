@@ -243,7 +243,7 @@ public class MavenUtils {
     try {
       T result = (T) clazz.getMethod("clone").invoke(obj);
       for (Method method : clazz.getDeclaredMethods()) {
-        if (method.getName().startsWith("get") && method.getParameterCount() == 0 && method.getReturnType() == String.class) {
+        if (method.getName().startsWith("get") && method.getParameterTypes().length == 0 && method.getReturnType() == String.class) {
           String value = (String) method.invoke(obj);
           if (value == null) continue;
           Matcher m = pattern.matcher(value);
@@ -281,7 +281,7 @@ public class MavenUtils {
     try {
       T result = (T) clazz.getMethod("clone").invoke(base);
       for (Method method : clazz.getDeclaredMethods()) {
-        if (method.getName().startsWith("get") && method.getParameterCount() == 0) {
+        if (method.getName().startsWith("get") && method.getParameterTypes().length == 0) {
           Object value = method.invoke(target);
           if (value != null) {
             try {
