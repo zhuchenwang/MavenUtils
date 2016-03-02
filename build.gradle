@@ -19,7 +19,7 @@ version '0.1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
 
 sourceCompatibility = 1.7
 
@@ -46,24 +46,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-            artifact sourceJar
-            artifact javadocJar
-        }
-    }
-
-    repositories {
-        maven {
-            // change to point to your repo, e.g. http://my.org/repo
-            url "https://oss.sonatype.org/content/repositories/snapshots"
-        }
-    }
-}
-
 task sourceJar(type: Jar) {
     classifier "sources"
     from sourceSets.main.allJava
@@ -72,4 +54,19 @@ task sourceJar(type: Jar) {
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier 'javadoc'
     from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourceJar
+    archives javadocJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url:"https://oss.sonatype.org/content/repositories/snapshots") {
+                authentication(userName: System.getenv("SONATYPE_USERNAME"), password: System.getenv("SONATYPE_PASSWORD"))
+            }
+        }
+    }
 }
