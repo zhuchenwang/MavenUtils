@@ -7,6 +7,14 @@ env:
     global:
         - secure: WojTcpLYiwT67IWYMz10zQus0Qh952Jiu9KZX4MtarB9/mBuwm5vyAETp0d2uoCkueMe6cedWCoO22QxJne8N1q9eWFbOckgiOTjCb3UH54Z5DO3TAP3T6wKzCPputgeRRDVihjqBMA+ONdYqt9nBbeuRkWHC2hxdRKmZTz61yrsRbhcDgFpxI9zp3+Iv4thbH/0eYlJyNAJpzYODwMZ7eFDnnW29k/1kFDRBhxsJTi0y5FnhzLM7r72O/rilydvPvCcrhAYaGUfFEtMahbG1+Cj2sUiEw67BwcM6nfo4ld6KrwcWPMD44U+1h3lMFqT55P8kCCVAV7hrU+vh3lm0fe9a/uRliNOuMSKX+NBUNjhhqesn1H+8s8X5onNOtpxX1eGJ/tFYXTeGgY/gswNijWIwl2YG3k0UtHa3WnQiRP7SOWFF4hPL3d64i+OLuIPFecibMGrVOcSfPUyWJbLGNRqekyYH3T1ahuk8ezP1WTKY5PRMDLzBzF4RWehRrG5OsbANX9+pNbRc+RDYu+jY1fNGGHoVI2hgGK1a1FYN7GVMGQxVuZIxh3IM/B20HdOvTbxKIWXDoS2IPvkrNqugD3Jof/HIbq2ADkJ1gWQHXzbGysA1cA7GKEhnfN5ikQxhWI8wAs8uI7QW2VsS2iYlfWzIiO+MsELdCunTcGlrIY=
         - secure: WbDkv8bOLgHsEPU4QadBMaH9KYCCHSBMhdsL1MfyQOlGbJHDuNPn0UYRxq+sJWccHvZmfS4RBgt7z01NnqWDFiCuXolZvIjiLCZ95hh7O1vuB6j6i4Az5WIri/YaTwgQEkROSvsQ6KoHYBTO+OWwHHr11k7R+Iv/AJQ0WZxnz7QRilaoPnFZJC3KsDyLv+ZiGoQv0KZxRhJHRRi5/DZaSKIWoONJ1TIDVUYMEVrtabY0djO4sjF1O3q8YQnywxsUc6tcniNZKVe2RHvEWSdJd/sW2BOX50XXkyRLh7VAkatLIWXjvs0T/IeeLdydj1oPwCbiO4zLN0nkgFMggHxCFRXVvL/U+jRdan5DSQ0RLXEqlDttDER3UK9XgjXg9OIHcPJ/fqXGtiGNqE4NFgH9iRqRZj6s5LDPnS7In6Yicl9nAhGVlx9FpTd5/muwigW14NH8Xr/Xo/cTo+XLDhweXCgbo7nIqzQJ7HX/9OMbj61IESgRfafuhYPojNMt5i7a5GcWV1KdVPCp54TIiSr56LzNyiDkqyANtsWo/PrOXOZhVk+KKhTmb+UqVG6c7LGfuQvu0+ohp6WHcp32RY7MEgqvAscy4jfsMEjz86l+wgYr/WQxVRmDUbT8lebrp0Sop6w5VfzFKVUsIG1XmlfoBb5fJWXkmMIYEEe1GxkSC90=
+        - secure: IcdmcJHTqppXWwe/O98oCzIFLKB95bJ117h6DA4GgxqFzF1/ZXX8gdYx1OJ7iqHVBQU9rKSYgld7W/XMWHT6S196bcuMlTgCmsXQDbK3g1M9ntLBBIqIuGwtE6kpow9mET7bWOJ0hdMj3laMefO0ophWR9nXt0MagizQIy/IRxG/Z26rN5/cMcU33kcZvmQ8uoWnkFj6I73WYBgtrAp+OnJ4E4AAdlDBw5r3OHkYTUD0D1BBttfxr7wSkOA/hy6ODQt9jIo1YoTN+KhOC74CindswWYBltaYNoZulFpJFTZXfbYURxrM3XwDL9ILaxp6fh1z5Rsoq/+i3c4tGR3MMZiSmPEtsPl7ieelEHMI1tDDjC7QO7kVXHzSTVnPS+27iW2I//CcuwbvoHZH543DakZyJ6GB9HVGzRvrm6KvJwb5+KlVxejrIRn1QHsdufD6S/kIv/SZhMrnA6OqLTuIIi4n4SulH58nP1DGsmfLyxTH+M3TXhl1DqujoOwQP6LJpVkn1gbuW34oQ9Z7IivrG+yRNWqlTaR2llA1XwmHyYSF01gAOxmFrHIWqMIUZgIDMoNNLrcgharqTu5vSMMdYkiq9mlNWZJ5xPzBRk/n19NkUehxNYEeEMRcxKzl2EhHXEwGF7T3nLFvKAFPtlp9hpNgRHMZawPTDltKVMW3jOo=
+
+before_install:
+    - >
+        if [ "x${ENCRYPTION_PASSWORD}" != "x" ]; then
+            openssl aes-256-cbc -pass pass:${ENCRYPTION_PASSWORD} -in secring.gpg.enc -out secring.gpg -d
+            openssl aes-256-cbc -pass pass:${ENCRYPTION_PASSWORD} -in build.properties.enc -out build.properties -d
+        fi
 
 install: ./gradlew clean classes
 
@@ -15,9 +23,9 @@ script: ./gradlew test jacocoTestReport
 after_success: ./gradlew uploadArchives
 
 before_cache:
-  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 
 cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+    directories:
+        - $HOME/.gradle/caches/
+        - $HOME/.gradle/wrapper/
