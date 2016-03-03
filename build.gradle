@@ -92,9 +92,14 @@ uploadArchives {
           }
         }
 
+        scm {
+          connection 'scm:git:git@github.com:zxfun/MavenUtils.git'
+          developerConnection 'scm:git:git@github.com:zxfun/MavenUtils.git'
+          url 'git@github.com:zxfun/MavenUtils.git'
+        }
+
         developers {
           developer {
-            id 'zhuchenwang'
             name 'Zhuchen Wang'
             email 'zcx.wang@gmail.com'
           }

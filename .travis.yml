@@ -13,7 +13,7 @@ before_install:
     - >
         if [ "x${ENCRYPTION_PASSWORD}" != "x" ]; then
             openssl aes-256-cbc -pass pass:${ENCRYPTION_PASSWORD} -in secring.gpg.enc -out secring.gpg -d
-            openssl aes-256-cbc -pass pass:${ENCRYPTION_PASSWORD} -in build.properties.enc -out build.properties -d
+            openssl aes-256-cbc -pass pass:${ENCRYPTION_PASSWORD} -in gradle.properties.enc -out gradle.properties -d
         fi
 
 install: ./gradlew clean classes
