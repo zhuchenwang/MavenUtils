@@ -128,7 +128,7 @@ public class MavenUtils {
   }
 
   /**
-   * Get all versions for the give artifact
+   * Get all versions for the given artifact
    *
    * @param groupId       group id of the artifact
    * @param artifactId    artifact id of the artifact
