@@ -1,7 +1,5 @@
 language: java
 
-sudo: required
-
 jdk:
     - oraclejdk7
 
@@ -20,14 +18,16 @@ before_install:
         fi
 
 install:
-    - curl https://www.jpm4j.org/install/script | sh
-    - jpm install com.codacy:codacy-coverage-reporter:assembly
+    - git clone https://github.com/codacy/codacy-coverage-reporter
+    - cd codacy-coverage-reporter
+    - sbt assembly
+    - cd ..
 
 script: ./gradlew clean test jacocoTestReport
 
 after_success:
     - ./gradlew uploadArchives
-    - codacy-coverage-reporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml
+    - java -cp codacy-coverage-reporter/target/codacy-coverage-reporter-assembly-1.0.4.jar com.codacy.CodacyCoverageReporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml
 
 before_cache:
     - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
