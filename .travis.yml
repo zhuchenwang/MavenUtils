@@ -27,7 +27,7 @@ script: ./gradlew clean test jacocoTestReport
 
 after_success:
     - ./gradlew uploadArchives
-    - java -cp codacy-coverage-reporter/target/codacy-coverage-reporter-assembly-1.0.4.jar com.codacy.CodacyCoverageReporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml
+    - java -cp codacy-coverage-reporter/target/*.jar com.codacy.CodacyCoverageReporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml
 
 before_cache:
     - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
