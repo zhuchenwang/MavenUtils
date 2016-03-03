@@ -101,7 +101,8 @@ public class MavenUtils {
     for (Map.Entry<String, ConfigValue> entry : repositories.entrySet()) {
       String key = entry.getKey();
       String url = repositories.getString(key);
-      RepositoryPolicy releasePolicy, snapshotPolicy;
+      RepositoryPolicy releasePolicy;
+      RepositoryPolicy snapshotPolicy;
       if (url.endsWith("snapshots")) {
         releasePolicy = new RepositoryPolicy(false, "never", "");
         snapshotPolicy = new RepositoryPolicy(true, "always", "");
@@ -211,7 +212,7 @@ public class MavenUtils {
     repositories.addAll(remoteRepositories);
     repositories.addAll(additionalRepositories);
 
-    CollectRequest collectRequest = new CollectRequest(new org.eclipse.aether.graph.Dependency(artifact, ""), repositories);
+    CollectRequest collectRequest = new CollectRequest(new Dependency(artifact, ""), repositories);
     collectRequest.setManagedDependencies(managedDependencies);
     DependencyRequest dependencyRequest = new DependencyRequest(collectRequest, dependencyFilter);
     Set<Artifact> results = new HashSet<Artifact>();
